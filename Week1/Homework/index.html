@@ -2,6 +2,7 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>김유민의 블로그</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -17,11 +18,13 @@
       </div>
 
       <div class="header-center">
-        <h3>김유민의 blog</h3>
+        <h1>김유민의 blog</h1>
       </div>
 
       <div class="header-right">
         <a href="https://github.com">
+          <a href="https://github.com">
+          <a href="https://github.com" target="_blank" rel="noopener noreferrer">
           <img src="images/pngegg.png" alt="깃허브 아이콘" />
         </a>
       </div>
@@ -31,34 +34,36 @@
       <nav class="side-nav">
         <ul>
           <li><a href="#photo-dump-section">포토덤프</a></li>
-          <li><a href="#photo-album-section">사진첩</a></Li>
+          <li><a href="#photo-album-section">사진첩</a></li>
           <li><a href="#interests-section">내 관심사</a></li>
           <li><a href="#to-the-web-section">To. 웹왔니</a></li>
         </ul>
       </nav>
 
       <div class="content-area">
-        
-        <h3>📸 포토덤프</h3>
-        <section id="photo-dump-section" class="photo-dump">
-        <div class="item item1">
-          <img src="images/dump-01.jpeg">
-        </div>
-        <div class="item item2">
-          <img src="images/dump-02.png">
-        </div>
-        <div class="item item3">
-          <img src="images/dump-03.png">
-        </div>
-        <div class="item item4">
-          <img src="images/dump-04.jpeg">
-        </div>
-        <div class="item item5">
-          <img src="images/dump-05.png">
-        </div>
-        <div class="item item6">
-          <img src="images/dump-06.jpg">
-        </div>
+      
+        <section id="photo-dump-section">
+          <h3 class="section-title">📸 포토덤프</h3>
+          <div class="photo-dump">
+            <div class="item item1">
+              <img src="images/dump-01.jpeg" alt="나의옆모습" />
+            </div>
+            <div class="item item2">
+              <img src="images/dump-02.png" alt="전시" />
+            </div>
+            <div class="item item3">
+              <img src="images/dump-03.png" alt="이쁜 노을" />
+            </div>
+            <div class="item item4">
+              <img src="images/dump-04.jpeg" alt="벚꽃" />
+            </div>
+            <div class="item item5">
+              <img src="images/dump-05.png" alt="거울샷" />
+            </div>
+            <div class="item item6">
+              <img src="images/dump-06.jpg" alt="달" />
+            </div>
+          </div>
       </section>
 
       <section id="photo-album-section" class="photo-album-container">
@@ -66,28 +71,28 @@
         
         <div class="photo-album">
           <div class="album-item">
-          <img src="images/album-01.png">
+          <img src="images/album-01.png" alt="성">
         </div>
         <div class="album-item">
-          <img src="images/album-02.png">
+          <img src="images/album-02.png" alt="숲">
         </div>
         <div class="album-item">
-          <img src="images/album-03.jpeg">
+          <img src="images/album-03.jpeg" alt="돌 전시">
         </div>
         <div class="album-item">
-          <img src="images/album-04.jpeg">
+          <img src="images/album-04.jpeg" alt="이쁜 노을">
         </div>
         <div class="album-item">
-          <img src="images/album-05.jpeg">
+          <img src="images/album-05.jpeg" alt="꽃과 우리">
         </div>
         <div class="album-item">
-          <img src="images/album-06.jpeg">
+          <img src="images/album-06.jpeg" alt="콜드플레이 콘서트">
         </div>
         <div class="album-item">
-          <img src="images/album-07.jpeg">
+          <img src="images/album-07.jpeg" alt="이쁜 바다 사진">
         </div>
         <div class="album-item">
-          <img src="images/album-08.jpeg">
+          <img src="images/album-08.jpeg" alt="미어켓">
         </div>
         </div>
       </section>
@@ -99,91 +104,91 @@
 
           <div class="interests-card">
             <div class="card-image">
-              <img src="images/interests-01.jpeg">
+              <img src="images/interests-01.jpeg" alt="진격의 거인">
             </div>
             <div class="card-content">
               <h4>진격의거인</h4>
               <div class="card-buttons">
-                <button class="btn-like">👍</button>
-                <button class="btn-dislike">👎</button>
+                <button type="button" class="btn-like" aria-label="좋아요">👍</button>
+                <button type="button" class="btn-dislike" aria-label="별로예요">👎</button>
               </div>
             </div>
           </div>
 
           <div class="interests-card">
             <div class="card-image">
-              <img src="images/interests-02.jpeg">
+              <img src="images/interests-02.jpeg" alt="쇼핑">
             </div>
             <div class="card-content">
               <h4>쇼핑</h4>
               <div class="card-buttons">
-                <button class="btn-like">👍</button>
-                <button class="btn-dislike">👎</button>
+                <button type="button" class="btn-like" aria-label="좋아요">👍</button>
+                <button type="button" class="btn-dislike" aria-label="별로예요">👎</button>
               </div>
             </div>
           </div>
 
           <div class="interests-card">
             <div class="card-image">
-              <img src="images/interests-03.jpeg">
+              <img src="images/interests-03.jpeg" alt="배틀그라운드">
             </div>
             <div class="card-content">
               <h4>배틀그라운드</h4>
               <div class="card-buttons">
-                <button class="btn-like">👍</button>
-                <button class="btn-dislike">👎</button>
+                <button type="button" class="btn-like" aria-label="좋아요">👍</button>
+                <button type="button" class="btn-dislike" aria-label="별로예요">👎</button>
               </div>
             </div>
           </div>
 
           <div class="interests-card">
             <div class="card-image">
-              <img src="images/interests-04.jpeg">
+              <img src="images/interests-04.jpeg" alt="코코넛커피">
             </div>
             <div class="card-content">
               <h4>코코넛커피</h4>
               <div class="card-buttons">
-                <button class="btn-like">👍</button>
-                <button class="btn-dislike">👎</button>
+                <button type="button" class="btn-like" aria-label="좋아요">👍</button>
+                <button type="button" class="btn-dislike" aria-label="별로예요">👎</button>
               </div>
             </div>
           </div>
 
           <div class="interests-card">
             <div class="card-image">
-              <img src="images/interests-05.jpeg">
+              <img src="images/interests-05.jpeg" alt="수영">
             </div>
             <div class="card-content">
               <h4>수영</h4>
               <div class="card-buttons">
-                <button class="btn-like">👍</button>
-                <button class="btn-dislike">👎</button>
+                <button type="button" class="btn-like" aria-label="좋아요">👍</button>
+                <button type="button" class="btn-dislike" aria-label="별로예요">👎</button>
               </div>
             </div>
           </div>
 
           <div class="interests-card">
             <div class="card-image">
-              <img src="images/interests-06.jpeg">
+              <img src="images/interests-06.jpeg" alt="강아지">
             </div>
             <div class="card-content">
               <h4>강아지</h4>
               <div class="card-buttons">
-                <button class="btn-like">👍</button>
-                <button class="btn-dislike">👎</button>
+                <button type="button" class="btn-like" aria-label="좋아요">👍</button>
+                <button type="button" class="btn-dislike" aria-label="별로예요">👎</button>
               </div>
             </div>
           </div>
 
           <div class="interests-card">
             <div class="card-image">
-              <img src="images/interests-07.jpeg">
+              <img src="images/interests-07.jpeg" alt="디저트">
             </div>
             <div class="card-content">
               <h4>디저트</h4>
               <div class="card-buttons">
-                <button class="btn-like">👍</button>
-                <button class="btn-dislike">👎</button>
+                <button type="button" class="btn-like" aria-label="좋아요">👍</button>
+                <button type="button" class="btn-dislike" aria-label="별로예요">👎</button>
               </div>
             </div>
           </div>
@@ -191,9 +196,7 @@
       </section>
       
       <section id="to-the-web-section">
-        <div class="to-web-title">
-          <h3>To. 우리집에 웹왔니</h3>
-        </div> 
+        <h3 class="to-web-title">To. 우리집에 왜왔니</h3>
         <div class="to-web-box">
           <p class="message">웹왔니 여러분 안녕하세요 !!</p>
             <p class="message">38기 웹 화이팅 !!</p>
