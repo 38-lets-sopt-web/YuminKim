@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="./css/filter.css" />
     <link rel="stylesheet" href="./css/table.css" />
     <link rel="stylesheet" href="./css/modal.css" />
-    <link rel="stylesheet" href="./css/style.css" />
   </head>
 
   <body>
@@ -46,8 +45,8 @@
           <label class="filter-label" for="typeSelect">유형</label>
           <select id="typeSelect" class="filter-input">
             <option value="">전체</option>
-            <option value="수입">수입</option>
-            <option value="지출">지출</option>
+            <option value="income">수입</option>
+            <option value="expense">지출</option>
           </select>
 
           <label class="filter-label" for="categorySelect">카테고리</label>
@@ -55,25 +54,28 @@
             <option value="">전체</option>
             <option value="식비">식비</option>
             <option value="교통">교통</option>
-            <option value="쇼핑">쇼핑</option>
-            <option value="급여">급여</option>
+            <option value="문화">문화</option>
+            <option value="생활">생활</option>
+            <option value="월급">월급</option>
+            <option value="기타">기타</option>
           </select>
 
           <label class="filter-label" for="paymentSelect">결제수단</label>
           <select id="paymentSelect" class="filter-input">
             <option value="">전체</option>
-            <option value="카드">카드</option>
+            <option value="신용카드">신용카드</option>
+            <option value="체크카드">체크카드</option>
             <option value="현금">현금</option>
-            <option value="계좌이체">계좌이체</option>
+            <option value="기타">기타</option>
           </select>
 
-          <button class="filter-btn apply-btn">적용</button>
-          <button class="filter-btn reset-btn">초기화</button>
+          <button type="button" class="filter-btn apply-btn">적용</button>
+          <button type="button" class="filter-btn reset-btn">초기화</button>
         </div>
       </div>
     </section>
 
-    <!--표 테이블-->
+    <!-- 표 테이블 -->
     <section class="table-section">
       <div class="table-top">
         <div class="table-top-left">
@@ -84,8 +86,8 @@
         </div>
 
         <div class="table-top-right">
-          <button id="deleteBtn">선택 삭제</button>
-          <button id="addBtn">추가</button>
+          <button id="deleteBtn" type="button">선택 삭제</button>
+          <button id="addBtn" type="button">추가</button>
         </div>
       </div>
 
@@ -101,78 +103,6 @@
           </tr>
         </thead>
 
-        <!-- 모달 -->
-        <div id="modalOverlay" class="modal-overlay hidden">
-          <div class="modal">
-            <div class="modal-header">
-              <h2>내역 추가</h2>
-              <button id="closeModal">✕</button>
-            </div>
-
-            <form id="modalForm" class="modal-form">
-              <label>
-                제목
-                <input
-                  type="text"
-                  id="modalTitle"
-                  placeholder="제목을 입력하세요"
-                />
-              </label>
-
-              <div class="modal-row">
-                <label>
-                  유형
-                  <select id="modalType">
-                    <option value="expense">지출 (-)</option>
-                    <option value="income">수입 (+)</option>
-                  </select>
-                </label>
-
-                <label>
-                  금액
-                  <input
-                    type="number"
-                    id="modalAmount"
-                    placeholder="금액 입력"
-                  />
-                </label>
-              </div>
-
-              <label>
-                날짜
-                <input type="date" id="modalDate" />
-              </label>
-
-              <div class="modal-row">
-                <label>
-                  카테고리
-                  <select id="modalCategory">
-                    <option value="식비">식비</option>
-                    <option value="교통">교통</option>
-                    <option value="문화">문화</option>
-                    <option value="생활">생활</option>
-                    <option value="월급">월급</option>
-                    <option value="기타">기타</option>
-                  </select>
-                </label>
-
-                <label>
-                  결제수단
-                  <select id="modalPayment">
-                    <option value="신용카드">신용카드</option>
-                    <option value="체크카드">체크카드</option>
-                    <option value="현금">현금</option>
-                    <option value="기타">기타</option>
-                  </select>
-                </label>
-              </div>
-
-              <div class="modal-buttons">
-                <button type="submit">추가</button>
-              </div>
-            </form>
-          </div>
-        </div>
         <tbody id="tableBody">
           <!-- JS로 채움 -->
         </tbody>
@@ -184,6 +114,84 @@
         </tfoot>
       </table>
     </section>
+
+    <!-- 모달 -->
+    <div id="modalOverlay" class="modal-overlay hidden">
+      <div class="modal">
+        <div class="modal-header">
+          <h2>내역 추가</h2>
+          <button id="closeModal" type="button" class="modal-close-btn">
+            ✕
+          </button>
+        </div>
+
+        <form id="modalForm" class="modal-form">
+          <label>
+            제목
+            <input
+              type="text"
+              id="modalTitle"
+              placeholder="제목을 입력하세요"
+            />
+          </label>
+
+          <div class="modal-row">
+            <label>
+              유형
+              <select id="modalType">
+                <option value="">선택</option>
+                <option value="expense">지출 (-)</option>
+                <option value="income">수입 (+)</option>
+              </select>
+            </label>
+
+            <label>
+              금액
+              <input
+                type="number"
+                id="modalAmount"
+                placeholder="금액을 입력하세요"
+              />
+            </label>
+          </div>
+
+          <label>
+            날짜
+            <input type="date" id="modalDate" />
+          </label>
+
+          <div class="modal-row">
+            <label>
+              카테고리
+              <select id="modalCategory">
+                <option value="">선택</option>
+                <option value="식비">식비</option>
+                <option value="교통">교통</option>
+                <option value="문화">문화</option>
+                <option value="생활">생활</option>
+                <option value="월급">월급</option>
+                <option value="기타">기타</option>
+              </select>
+            </label>
+
+            <label>
+              결제수단
+              <select id="modalPayment">
+                <option value="">선택</option>
+                <option value="신용카드">신용카드</option>
+                <option value="체크카드">체크카드</option>
+                <option value="현금">현금</option>
+                <option value="기타">기타</option>
+              </select>
+            </label>
+          </div>
+
+          <div class="modal-buttons">
+            <button type="submit">추가</button>
+          </div>
+        </form>
+      </div>
+    </div>
 
     <script type="module" src="./js/main.js"></script>
   </body>

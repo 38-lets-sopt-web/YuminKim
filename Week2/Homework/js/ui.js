@@ -1,11 +1,18 @@
 export function renderTable(list, tableBody) {
   tableBody.innerHTML = "";
 
+  if (list.length === 0) {
+    tableBody.innerHTML = `<tr><td colspan="6">내역이 없습니다.</td></tr>`;
+    return;
+  }
+
   list.forEach((item) => {
     const tr = document.createElement("tr");
 
     tr.innerHTML = `
-      <td><input type="checkbox" class="row-check" data-id="${item.id}" /></td>
+      <td>
+        <input type="checkbox" class="row-check" data-id="${item.id}" />
+      </td>
       <td>${item.title}</td>
       <td class="${item.amount >= 0 ? "income" : "expense"}">
         ${formatAmount(item.amount)}
@@ -26,5 +33,5 @@ export function renderTotal(list, totalEl) {
 
 function formatAmount(amount) {
   const sign = amount > 0 ? "+" : "";
-  return `${sign}${amount.toLocaleString()}`;
+  return `${sign}${amount.toLocaleString("ko-KR")}`;
 }
