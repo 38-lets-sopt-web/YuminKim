@@ -22,6 +22,14 @@ td {
   text-align: center;
 }
 
+tfoot td:first-child {
+  text-align: left;
+}
+
+tfoot td:last-child {
+  text-align: right;
+}
+
 thead {
   background: #cfd2d7;
 }

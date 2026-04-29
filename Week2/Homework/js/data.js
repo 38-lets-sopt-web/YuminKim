@@ -96,7 +96,3 @@ export const expenses = [
     amount: -30000,
   },
 ];
-
-if (!localStorage.getItem("expenseData")) {
-  localStorage.setItem("expenseData", JSON.stringify(expenses));
-}
