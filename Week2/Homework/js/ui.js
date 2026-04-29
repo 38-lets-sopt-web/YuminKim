@@ -28,7 +28,7 @@ export function renderTable(list, tableBody) {
 
 export function renderTotal(list, totalEl) {
   const total = list.reduce((sum, item) => sum + item.amount, 0);
-  totalEl.textContent = `total: ${formatAmount(total)}`;
+  totalEl.textContent = formatAmount(total);
 }
 
 function formatAmount(amount) {

@@ -16,10 +16,18 @@ table {
   overflow: hidden;
 }
 
-th,
-td {
+td,
+th {
   padding: 12px;
   text-align: center;
+}
+
+tfoot td:first-child {
+  text-align: left;
+}
+
+tfoot td:last-child {
+  text-align: right;
 }
 
 thead {

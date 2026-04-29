@@ -55,33 +55,30 @@ function getExpenseData() {
   return JSON.parse(saved);
 }
 
-function saveExpenseData() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(expenseList));
+function saveExpenseData(data) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
 // 필터 + 정렬
 function getFilteredList() {
   let list = [...expenseList];
 
-  if (filters.title) {
-    list = list.filter((item) =>
-      item.title.toLowerCase().includes(filters.title.toLowerCase()),
-    );
-  }
+  list = list.filter((item) => {
+    const matchTitle =
+      !filters.title ||
+      item.title.toLowerCase().includes(filters.title.toLowerCase());
 
-  if (filters.type) {
-    list = list.filter((item) =>
-      filters.type === "income" ? item.amount >= 0 : item.amount < 0,
-    );
-  }
+    const matchType =
+      !filters.type ||
+      (filters.type === "income" ? item.amount >= 0 : item.amount < 0);
 
-  if (filters.category) {
-    list = list.filter((item) => item.category === filters.category);
-  }
+    const matchCategory =
+      !filters.category || item.category === filters.category;
 
-  if (filters.payment) {
-    list = list.filter((item) => item.payment === filters.payment);
-  }
+    const matchPayment = !filters.payment || item.payment === filters.payment;
+
+    return matchTitle && matchType && matchCategory && matchPayment;
+  });
 
   if (sortSelect.value === "latest") {
     list.sort((a, b) => new Date(b.date) - new Date(a.date));
@@ -110,8 +107,10 @@ function deleteSelected() {
   }
 
   expenseList = expenseList.filter((item) => !ids.includes(item.id));
-  saveExpenseData();
+  saveExpenseData(expenseList);
   updateUI();
+
+  checkAll.checked = false;
 }
 
 // 체크박스 전체 선택
@@ -167,8 +166,8 @@ function handleAdd(e) {
   const category = modalCategory.value;
   const payment = modalPayment.value;
 
-  if (!title || !type || !amount || !date || !category || !payment) {
-    alert("모든 항목 입력해주세요");
+  if (!modalForm.checkValidity()) {
+    alert("모든 필드를 입력해주세요.");
     return;
   }
 
@@ -183,9 +182,18 @@ function handleAdd(e) {
   };
 
   expenseList.push(newItem);
-  saveExpenseData();
+  saveExpenseData(expenseList);
   updateUI();
   closeModal();
+}
+
+//체크박스
+function updateCheckAllState() {
+  const checks = document.querySelectorAll(".row-check");
+  const checkedChecks = document.querySelectorAll(".row-check:checked");
+
+  checkAll.checked =
+    checks.length > 0 && checks.length === checkedChecks.length;
 }
 
 // 이벤트
@@ -203,6 +211,12 @@ sortSelect.addEventListener("change", updateUI);
 
 modalOverlay.addEventListener("click", (e) => {
   if (e.target === modalOverlay) closeModal();
+});
+
+tableBody.addEventListener("change", (e) => {
+  if (e.target.classList.contains("row-check")) {
+    updateCheckAllState();
+  }
 });
 
 // 최초 실행
