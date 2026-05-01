@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import styled from "@emotion/styled";
 
 const Page = styled.main`
@@ -76,8 +77,84 @@ const Hole = styled.button`
   background-color: #9feefa;
 `;
 
+const ModalOverlay = styled.div`
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(18, 56, 92, 0.55);
+`;
+
+const ModalBox = styled.div`
+  width: 280px;
+  padding: 28px;
+  border-radius: 18px;
+  background-color: #eaf7ff;
+  text-align: center;
+  color: #12385c;
+  box-shadow: 0 20px 50px rgba(18, 56, 92, 0.25);
+`;
+
+const ModalTitle = styled.h2`
+  margin: 0 0 16px;
+  font-size: 22px;
+`;
+
+const ModalScore = styled.strong`
+  display: block;
+  margin-bottom: 20px;
+  font-size: 28px;
+  color: #309cac;
+`;
+
+const ModalButton = styled.button`
+  padding: 10px 18px;
+  border: none;
+  border-radius: 999px;
+  background-color: #37bfd4;
+  color: #ffffff;
+  cursor: pointer;
+`;
+
 function App() {
   const [activeTab, setActiveTab] = useState("game");
+  const [timeLeft, setTimeLeft] = useState(15);
+  const [score, setScore] = useState(0);
+  const [successCount, setSuccessCount] = useState(0);
+  const [failCount, setFailCount] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isGameOver, setIsGameOver] = useState(false);
+
+  const handleStartGame = () => {
+    setIsGameOver(false);
+    setTimeLeft(15);
+    setScore(0);
+    setSuccessCount(0);
+    setFailCount(0);
+    setIsPlaying(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsGameOver(false);
+  };
+
+  useEffect(() => {
+    if (!isPlaying) return;
+
+    const timerId = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 0.1) {
+          setIsPlaying(false);
+          setIsGameOver(true);
+          return 0;
+        }
+
+        return prevTime - 0.1;
+      });
+    }, 100);
+    return () => clearInterval(timerId);
+  }, [isPlaying]);
 
   return (
     <Page>
@@ -92,21 +169,29 @@ function App() {
           <StatusPanel>
             <Card>
               <p>남은시간</p>
-              <strong>15.0</strong>
+              <strong>{timeLeft.toFixed(1)}</strong>
+            </Card>
+
+            <Card>
+              <p>총 점수</p>
+              <strong>{score}</strong>
             </Card>
 
             <Card>
               <p>성공</p>
-              <strong>0</strong>
+              <strong>{successCount}</strong>
             </Card>
 
             <Card>
               <p>실패</p>
-              <strong>0</strong>
+              <strong>{failCount}</strong>
             </Card>
 
             <Card>
               <p>안내 메세지</p>
+              <strong>
+                {isPlaying ? "게임 진행 중" : "시작 버튼을 눌러주세요"}
+              </strong>
             </Card>
           </StatusPanel>
 
@@ -118,8 +203,8 @@ function App() {
                 <option>Level 3</option>
               </select>
 
-              <button>시작</button>
-              <button>중단</button>
+              <button onClick={handleStartGame}>시작</button>
+              <button onClick={() => setIsPlaying(false)}>중단</button>
             </div>
 
             <Board>
@@ -133,6 +218,18 @@ function App() {
       )}
 
       {activeTab === "ranking" && <div>랭킹 화면</div>}
+
+      {isGameOver &&
+        createPortal(
+          <ModalOverlay>
+            <ModalBox>
+              <ModalTitle>게임 종료!</ModalTitle>
+              <ModalScore>최종 점수: {score}점</ModalScore>
+              <ModalButton onClick={handleCloseModal}>확인</ModalButton>
+            </ModalBox>
+          </ModalOverlay>,
+          document.body
+        )}
     </Page>
   );
 }
