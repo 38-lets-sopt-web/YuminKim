@@ -1,3 +1,4 @@
+import { useState } from "react";
 import styled from "@emotion/styled";
 
 const Page = styled.main`
@@ -76,56 +77,62 @@ const Hole = styled.button`
 `;
 
 function App() {
+  const [activeTab, setActiveTab] = useState("game");
+
   return (
     <Page>
       <Header>
         <Title>두더지 게임</Title>
-        <TabButton>게임</TabButton>
-        <TabButton>랭킹</TabButton>
+        <TabButton onClick={() => setActiveTab("game")}>게임</TabButton>
+        <TabButton onClick={() => setActiveTab("ranking")}>랭킹</TabButton>
       </Header>
 
-      <GameLayout>
-        <StatusPanel>
-          <Card>
-            <p>남은시간</p>
-            <strong>15.0</strong>
-          </Card>
+      {activeTab === "game" && (
+        <GameLayout>
+          <StatusPanel>
+            <Card>
+              <p>남은시간</p>
+              <strong>15.0</strong>
+            </Card>
 
-          <Card>
-            <p>성공</p>
-            <strong>0</strong>
-          </Card>
+            <Card>
+              <p>성공</p>
+              <strong>0</strong>
+            </Card>
 
-          <Card>
-            <p>실패</p>
-            <strong>0</strong>
-          </Card>
+            <Card>
+              <p>실패</p>
+              <strong>0</strong>
+            </Card>
 
-          <Card>
-            <p>안내 메세지</p>
-          </Card>
-        </StatusPanel>
+            <Card>
+              <p>안내 메세지</p>
+            </Card>
+          </StatusPanel>
 
-        <GamePanel>
-          <div>
-            <select>
-              <option>Level 1</option>
-              <option>Level 2</option>
-              <option>Level 3</option>
-            </select>
+          <GamePanel>
+            <div>
+              <select>
+                <option>Level 1</option>
+                <option>Level 2</option>
+                <option>Level 3</option>
+              </select>
 
-            <button>시작</button>
-            <button>중단</button>
-          </div>
+              <button>시작</button>
+              <button>중단</button>
+            </div>
 
-          <Board>
-            <Hole />
-            <Hole />
-            <Hole />
-            <Hole />
-          </Board>
-        </GamePanel>
-      </GameLayout>
+            <Board>
+              <Hole />
+              <Hole />
+              <Hole />
+              <Hole />
+            </Board>
+          </GamePanel>
+        </GameLayout>
+      )}
+
+      {activeTab === "ranking" && <div>랭킹 화면</div>}
     </Page>
   );
 }
