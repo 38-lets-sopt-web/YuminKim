@@ -83,6 +83,49 @@ function App() {
         <TabButton>게임</TabButton>
         <TabButton>랭킹</TabButton>
       </Header>
+
+      <GameLayout>
+        <StatusPanel>
+          <Card>
+            <p>남은시간</p>
+            <strong>15.0</strong>
+          </Card>
+
+          <Card>
+            <p>성공</p>
+            <strong>0</strong>
+          </Card>
+
+          <Card>
+            <p>실패</p>
+            <strong>0</strong>
+          </Card>
+
+          <Card>
+            <p>안내 메세지</p>
+          </Card>
+        </StatusPanel>
+
+        <GamePanel>
+          <div>
+            <select>
+              <option>Level 1</option>
+              <option>Level 2</option>
+              <option>Level 3</option>
+            </select>
+
+            <button>시작</button>
+            <button>중단</button>
+          </div>
+
+          <Board>
+            <Hole />
+            <Hole />
+            <Hole />
+            <Hole />
+          </Board>
+        </GamePanel>
+      </GameLayout>
     </Page>
   );
 }
