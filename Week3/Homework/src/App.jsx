@@ -6,6 +6,8 @@ import moleImg from "./assets/mole.png";
 import bombImg from "./assets/bomb.png";
 import hitMoleImg from "./assets/hit-mole.png";
 
+const RANKING_STORAGE_KEY = "mole-game-rankings";
+
 const Page = styled.main`
   min-height: 100vh;
   background-color: #effcff;
@@ -195,6 +197,7 @@ function App() {
   const [isGameOver, setIsGameOver] = useState(false);
   const [activeIndex, setActiveIndex] = useState(null);
   const [activeType, setActiveType] = useState(null);
+  const [rankingRecords, setRankingRecords] = useState([]);
 
   const showRandomTarget = () => {
     const randomIndex = Math.floor(Math.random() * 4);
@@ -241,6 +244,35 @@ function App() {
     setIsGameOver(false);
   };
 
+  const saveRankingRecord = () => {
+    if (score < 1) return;
+
+    const prevRecords = JSON.parse(
+      localStorage.getItem(RANKING_STORAGE_KEY) || "[]",
+    );
+
+    const newRecord = {
+      id: Date.now(),
+      level: "Level 1",
+      score,
+      recordedAt: new Date().toLocaleString(),
+    };
+
+    const nextRecords = [...prevRecords, newRecord].sort(
+      (a, b) => b.score - a.score,
+    );
+
+    localStorage.setItem(RANKING_STORAGE_KEY, JSON.stringify(nextRecords));
+  };
+
+  const loadRankingRecords = () => {
+    const records = JSON.parse(
+      localStorage.getItem(RANKING_STORAGE_KEY) || "[]",
+    );
+
+    setRankingRecords(records);
+  };
+
   useEffect(() => {
     if (!isPlaying) return;
 
@@ -251,6 +283,7 @@ function App() {
           setIsGameOver(true);
           setActiveIndex(null);
           setActiveType(null);
+          saveRankingRecord();
           return 0;
         }
 
@@ -259,7 +292,7 @@ function App() {
     }, 100);
 
     return () => clearInterval(timerId);
-  }, [isPlaying]);
+  }, [isPlaying, score]);
 
   useEffect(() => {
     if (!isPlaying) return;
@@ -278,7 +311,14 @@ function App() {
       <Header>
         <Title>두더지 게임</Title>
         <TabButton onClick={() => setActiveTab("game")}>게임</TabButton>
-        <TabButton onClick={() => setActiveTab("ranking")}>랭킹</TabButton>
+        <TabButton
+          onClick={() => {
+            setActiveTab("ranking");
+            loadRankingRecords();
+          }}
+        >
+          랭킹
+        </TabButton>
       </Header>
 
       {activeTab === "game" && (
@@ -369,12 +409,14 @@ function App() {
             </TableHead>
 
             <tbody>
-              <tr>
-                <TableCell>1</TableCell>
-                <TableCell>Level 1</TableCell>
-                <TableCell>10점</TableCell>
-                <TableCell>2026. 5. 1 오후 7:20</TableCell>
-              </tr>
+              {rankingRecords.map((record, index) => (
+                <tr key={record.id}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{record.level}</TableCell>
+                  <TableCell>{record.score}점</TableCell>
+                  <TableCell>{record.recordedAt}</TableCell>
+                </tr>
+              ))}
             </tbody>
           </RankingTable>
         </RankingPanel>
