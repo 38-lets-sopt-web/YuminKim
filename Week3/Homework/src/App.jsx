@@ -199,6 +199,7 @@ function App() {
   const [activeType, setActiveType] = useState(null);
   const [rankingRecords, setRankingRecords] = useState([]);
   const hasSaveRecordRef = useRef(false);
+  const [message, setMessage] = useState("시작 버튼을 눌러주세요");
 
   const showRandomTarget = () => {
     const randomIndex = Math.floor(Math.random() * 4);
@@ -216,6 +217,7 @@ function App() {
       setScore((prevScore) => prevScore + 1);
       setSuccessCount((prevCount) => prevCount + 1);
       setActiveType("hit");
+      setMessage("두더지를 잡았습니다!");
 
       setTimeout(() => {
         showRandomTarget();
@@ -228,6 +230,7 @@ function App() {
       setScore((prevScore) => prevScore - 1);
       setFailCount((prevCount) => prevCount + 1);
       showRandomTarget();
+      setMessage("펑!!");
     }
   };
 
@@ -294,6 +297,7 @@ function App() {
           setActiveIndex(null);
           setActiveType(null);
           saveRankingRecord();
+          setMessage("게임이 종료되었습니다.");
           return 0;
         }
 
@@ -356,9 +360,7 @@ function App() {
 
             <Card>
               <p>안내 메세지</p>
-              <strong>
-                {isPlaying ? "게임 진행 중" : "시작 버튼을 눌러주세요"}
-              </strong>
+              <strong>{message}</strong>
             </Card>
           </StatusPanel>
 
