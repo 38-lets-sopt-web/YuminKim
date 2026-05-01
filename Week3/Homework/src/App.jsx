@@ -133,6 +133,58 @@ const ModalButton = styled.button`
   cursor: pointer;
 `;
 
+//여기부터 랭킹
+
+const RankingPanel = styled.section`
+  margin-top: 28px;
+  padding: 28px;
+  border-radius: 16px;
+  background-color: #d8f7ff;
+`;
+
+const RankingHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+`;
+
+const RankingTitle = styled.h2`
+  margin: 0;
+  color: #12385c;
+  font-size: 24px;
+`;
+
+const ResetButton = styled.button`
+  padding: 10px 16px;
+  border: none;
+  border-radius: 999px;
+  background-color: #ff7c7c;
+  color: #ffffff;
+  cursor: pointer;
+`;
+
+const RankingTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  background-color: #effcff;
+`;
+
+const TableHead = styled.thead`
+  background-color: #9feefa;
+  color: #12385c;
+`;
+
+const TableCell = styled.td`
+  padding: 14px;
+  border-bottom: 1px solid #bceef6;
+`;
+
+const TableHeaderCell = styled.th`
+  padding: 14px;
+`;
+
 function App() {
   const [activeTab, setActiveTab] = useState("game");
   const [timeLeft, setTimeLeft] = useState(15);
@@ -197,6 +249,8 @@ function App() {
         if (prevTime <= 0.1) {
           setIsPlaying(false);
           setIsGameOver(true);
+          setActiveIndex(null);
+          setActiveType(null);
           return 0;
         }
 
@@ -273,17 +327,23 @@ function App() {
             <Board>
               {[0, 1, 2, 3].map((index) => (
                 <Hole key={index} onClick={() => handleClickHole(index)}>
-                  {activeIndex === index && activeType === "mole" && (
-                    <TargetImage src={moleImg} alt="두더지" />
-                  )}
+                  {isPlaying &&
+                    activeIndex === index &&
+                    activeType === "mole" && (
+                      <TargetImage src={moleImg} alt="두더지" />
+                    )}
 
-                  {activeIndex === index && activeType === "bomb" && (
-                    <TargetImage src={bombImg} alt="폭탄" />
-                  )}
+                  {isPlaying &&
+                    activeIndex === index &&
+                    activeType === "bomb" && (
+                      <TargetImage src={bombImg} alt="폭탄" />
+                    )}
 
-                  {activeIndex === index && activeType === "hit" && (
-                    <TargetImage src={hitMoleImg} alt="맞은 두더지" />
-                  )}
+                  {isPlaying &&
+                    activeIndex === index &&
+                    activeType === "hit" && (
+                      <TargetImage src={hitMoleImg} alt="맞은 두더지" />
+                    )}
                 </Hole>
               ))}
             </Board>
@@ -291,7 +351,34 @@ function App() {
         </GameLayout>
       )}
 
-      {activeTab === "ranking" && <div>랭킹 화면</div>}
+      {activeTab === "ranking" && (
+        <RankingPanel>
+          <RankingHeader>
+            <RankingTitle>랭킹 보드</RankingTitle>
+            <ResetButton>기록 초기화</ResetButton>
+          </RankingHeader>
+
+          <RankingTable>
+            <TableHead>
+              <tr>
+                <TableHeaderCell>순위</TableHeaderCell>
+                <TableHeaderCell>레벨</TableHeaderCell>
+                <TableHeaderCell>점수</TableHeaderCell>
+                <TableHeaderCell>기록 시각</TableHeaderCell>
+              </tr>
+            </TableHead>
+
+            <tbody>
+              <tr>
+                <TableCell>1</TableCell>
+                <TableCell>Level 1</TableCell>
+                <TableCell>10점</TableCell>
+                <TableCell>2026. 5. 1 오후 7:20</TableCell>
+              </tr>
+            </tbody>
+          </RankingTable>
+        </RankingPanel>
+      )}
 
       {isGameOver &&
         createPortal(
