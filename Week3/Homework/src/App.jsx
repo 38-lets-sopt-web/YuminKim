@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import styled from "@emotion/styled";
 
@@ -198,6 +198,7 @@ function App() {
   const [activeIndex, setActiveIndex] = useState(null);
   const [activeType, setActiveType] = useState(null);
   const [rankingRecords, setRankingRecords] = useState([]);
+  const hasSaveRecordRef = useRef(false);
 
   const showRandomTarget = () => {
     const randomIndex = Math.floor(Math.random() * 4);
@@ -232,6 +233,7 @@ function App() {
 
   const handleStartGame = () => {
     setIsGameOver(false);
+    hasSaveRecordRef.current = false;
     setTimeLeft(15);
     setScore(0);
     setSuccessCount(0);
@@ -245,7 +247,10 @@ function App() {
   };
 
   const saveRankingRecord = () => {
+    if (hasSaveRecordRef.current) return;
     if (score < 1) return;
+
+    hasSaveRecordRef.current = true;
 
     const prevRecords = JSON.parse(
       localStorage.getItem(RANKING_STORAGE_KEY) || "[]",
