@@ -1,191 +1,51 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import styled from "@emotion/styled";
 
 import moleImg from "./assets/mole.png";
 import bombImg from "./assets/bomb.png";
 import hitMoleImg from "./assets/hit-mole.png";
 
+import {
+  Page,
+  Header,
+  Title,
+  TabButton,
+  GameButton,
+  GameLayout,
+  StatusPanel,
+  Card,
+  CountRow,
+  MessageCard,
+  GamePanel,
+  GameToolbar,
+  LevelSelect,
+  ButtonGroup,
+  Board,
+  Hole,
+  TargetImage,
+  ModalOverlay,
+  ModalBox,
+  ModalTitle,
+  ModalScore,
+  ModalButton,
+  RankingPanel,
+  RankingHeader,
+  RankingTitle,
+  ResetButton,
+  RankingTable,
+  TableHead,
+  TableCell,
+  TableHeaderCell,
+} from "./App.styles";
+
 const RANKING_STORAGE_KEY = "mole-game-rankings";
 
-const Page = styled.main`
-  min-height: 100vh;
-  background-color: #effcff;
-  padding: 32px;
-`;
+const getRandomTarget = () => {
+  const randomIndex = Math.floor(Math.random() * 4);
+  const randomType = Math.random() < 0.7 ? "mole" : "bomb";
 
-const Header = styled.header`
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 24px;
-  border-radius: 16px;
-  color: #309cac;
-  background-color: #dff8ff;
-`;
-
-const Title = styled.h1`
-  margin: 0;
-  color: #309cac;
-  font-size: 40px;
-`;
-
-const TabButton = styled.button`
-  padding: 8px 14px;
-  border: 1px solid #98d0d9;
-  border-radius: 16px;
-  background-color: #ffffff;
-  color: #309cac;
-  cursor: pointer;
-`;
-
-const GameLayout = styled.section`
-  display: grid;
-  grid-template-columns: 220px 1fr;
-  gap: 24px;
-  margin-top: 28px;
-`;
-
-const StatusPanel = styled.aside`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-`;
-
-const Card = styled.div`
-  border-radius: 16px;
-  background-color: #d8f7ff;
-  padding: 24px;
-  text-align: center;
-`;
-
-const GamePanel = styled.section`
-  border-radius: 16px;
-  background-color: #d8f7ff;
-  padding: 24px;
-`;
-
-const Board = styled.div`
-  width: 420px;
-  height: 420px;
-  margin: 24px auto 0;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 32px;
-  padding: 40px;
-  border-radius: 16px;
-  background-color: #f4fdff;
-`;
-
-const Hole = styled.button`
-  width: 100%;
-  aspect-ratio: 1 / 1;
-  border: none;
-  border-radius: 50%;
-  background-color: #9feefa;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-`;
-
-const TargetImage = styled.img`
-  width: 65%;
-  height: 65%;
-  object-fit: contain;
-`;
-
-const ModalOverlay = styled.div`
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgba(18, 56, 92, 0.55);
-`;
-
-const ModalBox = styled.div`
-  width: 280px;
-  padding: 28px;
-  border-radius: 18px;
-  background-color: #eaf7ff;
-  text-align: center;
-  color: #12385c;
-  box-shadow: 0 20px 50px rgba(18, 56, 92, 0.25);
-`;
-
-const ModalTitle = styled.h2`
-  margin: 0 0 16px;
-  font-size: 22px;
-`;
-
-const ModalScore = styled.strong`
-  display: block;
-  margin-bottom: 20px;
-  font-size: 28px;
-  color: #309cac;
-`;
-
-const ModalButton = styled.button`
-  padding: 10px 18px;
-  border: none;
-  border-radius: 999px;
-  background-color: #37bfd4;
-  color: #ffffff;
-  cursor: pointer;
-`;
-
-//여기부터 랭킹
-
-const RankingPanel = styled.section`
-  margin-top: 28px;
-  padding: 28px;
-  border-radius: 16px;
-  background-color: #d8f7ff;
-`;
-
-const RankingHeader = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 16px;
-`;
-
-const RankingTitle = styled.h2`
-  margin: 0;
-  color: #12385c;
-  font-size: 24px;
-`;
-
-const ResetButton = styled.button`
-  padding: 10px 16px;
-  border: none;
-  border-radius: 999px;
-  background-color: #ff7c7c;
-  color: #ffffff;
-  cursor: pointer;
-`;
-
-const RankingTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-  text-align: center;
-  background-color: #effcff;
-`;
-
-const TableHead = styled.thead`
-  background-color: #9feefa;
-  color: #12385c;
-`;
-
-const TableCell = styled.td`
-  padding: 14px;
-  border-bottom: 1px solid #bceef6;
-`;
-
-const TableHeaderCell = styled.th`
-  padding: 14px;
-`;
+  return { randomIndex, randomType };
+};
 
 function App() {
   const [activeTab, setActiveTab] = useState("game");
@@ -199,15 +59,14 @@ function App() {
   const [activeType, setActiveType] = useState(null);
   const [rankingRecords, setRankingRecords] = useState([]);
   const hasSaveRecordRef = useRef(false);
-  const [message, setMessage] = useState("시작 버튼을 눌러주세요");
+  const [message, setMessage] = useState("");
 
-  const showRandomTarget = () => {
-    const randomIndex = Math.floor(Math.random() * 4);
-    const randomType = Math.random() < 0.7 ? "mole" : "bomb";
+  const showRandomTarget = useCallback(() => {
+    const { randomIndex, randomType } = getRandomTarget();
 
     setActiveIndex(randomIndex);
     setActiveType(randomType);
-  };
+  }, []);
 
   const handleClickHole = (index) => {
     if (!isPlaying) return;
@@ -217,9 +76,10 @@ function App() {
       setScore((prevScore) => prevScore + 1);
       setSuccessCount((prevCount) => prevCount + 1);
       setActiveType("hit");
-      setMessage("두더지를 잡았습니다!");
+      setMessage("두더지를 잡았다!");
 
       setTimeout(() => {
+        setMessage("");
         showRandomTarget();
       }, 700);
 
@@ -231,6 +91,14 @@ function App() {
       setFailCount((prevCount) => prevCount + 1);
       showRandomTarget();
       setMessage("펑!!");
+
+      setActiveIndex(null);
+      setActiveType(null);
+
+      setTimeout(() => {
+        setMessage("");
+        showRandomTarget();
+      }, 500);
     }
   };
 
@@ -249,7 +117,7 @@ function App() {
     setIsGameOver(false);
   };
 
-  const saveRankingRecord = () => {
+  const saveRankingRecord = useCallback(() => {
     if (hasSaveRecordRef.current) return;
     if (score < 1) return;
 
@@ -271,7 +139,7 @@ function App() {
     );
 
     localStorage.setItem(RANKING_STORAGE_KEY, JSON.stringify(nextRecords));
-  };
+  }, [score]);
 
   const loadRankingRecords = () => {
     const records = JSON.parse(
@@ -297,7 +165,6 @@ function App() {
           setActiveIndex(null);
           setActiveType(null);
           saveRankingRecord();
-          setMessage("게임이 종료되었습니다.");
           return 0;
         }
 
@@ -306,19 +173,20 @@ function App() {
     }, 100);
 
     return () => clearInterval(timerId);
-  }, [isPlaying, score]);
+  }, [isPlaying, saveRankingRecord]);
 
   useEffect(() => {
     if (!isPlaying) return;
 
     const targetTimerId = setInterval(() => {
       if (activeType === "hit") return;
+      if (message) return;
 
       showRandomTarget();
     }, 1300);
 
     return () => clearInterval(targetTimerId);
-  }, [isPlaying, activeType]);
+  }, [isPlaying, activeType, message, showRandomTarget]);
 
   return (
     <Page>
@@ -348,33 +216,41 @@ function App() {
               <strong>{score}</strong>
             </Card>
 
-            <Card>
-              <p>성공</p>
-              <strong>{successCount}</strong>
-            </Card>
+            <CountRow>
+              <Card>
+                <p style={{ color: "#31b45f" }}>성공</p>
+                <strong>{successCount}</strong>
+              </Card>
 
-            <Card>
-              <p>실패</p>
-              <strong>{failCount}</strong>
-            </Card>
+              <Card>
+                <p style={{ color: "#f06b6b" }}>실패</p>
+                <strong>{failCount}</strong>
+              </Card>
+            </CountRow>
 
-            <Card>
+            <MessageCard>
               <p>안내 메세지</p>
               <strong>{message}</strong>
-            </Card>
+            </MessageCard>
           </StatusPanel>
 
           <GamePanel>
-            <div>
-              <select>
+            <GameToolbar>
+              <LevelSelect>
                 <option>Level 1</option>
                 <option>Level 2</option>
                 <option>Level 3</option>
-              </select>
+              </LevelSelect>
 
-              <button onClick={handleStartGame}>시작</button>
-              <button onClick={() => setIsPlaying(false)}>중단</button>
-            </div>
+              <ButtonGroup>
+                <GameButton onClick={handleStartGame}>
+                  <span style={{ color: "#31b45f" }}>시작</span>
+                </GameButton>
+                <GameButton onClick={() => setIsPlaying(false)}>
+                  <span style={{ color: "#f06b6b" }}>중단</span>
+                </GameButton>
+              </ButtonGroup>
+            </GameToolbar>
 
             <Board>
               {[0, 1, 2, 3].map((index) => (
