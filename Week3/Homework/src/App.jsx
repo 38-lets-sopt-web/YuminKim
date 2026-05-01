@@ -278,6 +278,11 @@ function App() {
     setRankingRecords(records);
   };
 
+  const handleResetRanking = () => {
+    localStorage.removeItem(RANKING_STORAGE_KEY);
+    setRankingRecords([]);
+  };
+
   useEffect(() => {
     if (!isPlaying) return;
 
@@ -306,7 +311,7 @@ function App() {
       if (activeType === "hit") return;
 
       showRandomTarget();
-    }, 2000);
+    }, 1300);
 
     return () => clearInterval(targetTimerId);
   }, [isPlaying, activeType]);
@@ -400,7 +405,7 @@ function App() {
         <RankingPanel>
           <RankingHeader>
             <RankingTitle>랭킹 보드</RankingTitle>
-            <ResetButton>기록 초기화</ResetButton>
+            <ResetButton onClick={handleResetRanking}>기록 초기화</ResetButton>
           </RankingHeader>
 
           <RankingTable>
@@ -414,14 +419,22 @@ function App() {
             </TableHead>
 
             <tbody>
-              {rankingRecords.map((record, index) => (
-                <tr key={record.id}>
-                  <TableCell>{index + 1}</TableCell>
-                  <TableCell>{record.level}</TableCell>
-                  <TableCell>{record.score}점</TableCell>
-                  <TableCell>{record.recordedAt}</TableCell>
+              {rankingRecords.length === 0 ? (
+                <tr>
+                  <TableCell colSpan={4}>
+                    아직 기록이 없습니다. 게임을 시작해보세요!
+                  </TableCell>
                 </tr>
-              ))}
+              ) : (
+                rankingRecords.map((record, index) => (
+                  <tr key={record.id}>
+                    <TableCell>{index + 1}</TableCell>
+                    <TableCell>{record.level}</TableCell>
+                    <TableCell>{record.score}점</TableCell>
+                    <TableCell>{record.recordedAt}</TableCell>
+                  </tr>
+                ))
+              )}
             </tbody>
           </RankingTable>
         </RankingPanel>
