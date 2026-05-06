@@ -1,0 +1,49 @@
+.table-section {
+  margin-top: 40px;
+}
+
+.table-top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+th,
+td {
+  padding: 12px;
+  text-align: center;
+}
+
+tfoot td:first-child {
+  text-align: left;
+}
+
+tfoot td:last-child {
+  text-align: right;
+}
+
+thead {
+  background: #cfd2d7;
+}
+
+tbody tr:hover {
+  background: #f9fafb;
+}
+
+.income {
+  color: blue;
+  font-weight: bold;
+}
+
+.expense {
+  color: red;
+  font-weight: bold;
+}
