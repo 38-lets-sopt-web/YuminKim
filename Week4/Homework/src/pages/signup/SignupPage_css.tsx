@@ -5,7 +5,7 @@ export const PageContainer = styled.main`
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #eaf2f9;
+  background: ${({ theme }: any) => theme.color.primary};
 `;
 
 export const SignupForm = styled.section`
@@ -16,28 +16,27 @@ export const SignupForm = styled.section`
 
 export const Title = styled.h1`
   margin-bottom: 28px;
-  color: #173a5e;
-  font-size: 28px;
+  color: ${({ theme }: any) => theme.color.text};
+  font-size: ${({ theme }: any) => theme.font.title};
   text-align: center;
 `;
 
 export const Label = styled.label`
   margin-bottom: 8px;
-  font-size: 13px;
+  font-size: ${({ theme }: any) => theme.font.label};
 `;
 
 export const Select = styled.select`
   padding: 8px 14px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid ${({ theme }: any) => theme.color.border};
   border-radius: 6px;
-  font-size: 16px;
-  cursor: pointer;
+  font-size: ${({ theme }: any) => theme.font.input};
 `;
 
 export const LoginText = styled.h1`
   margin-bottom: 28px;
-  color: #173a5e;
-  font-size: 15px;
+  color: ${({ theme }: any) => theme.color.text};
+  font-size: ${({ theme }: any) => theme.font.caption};
   text-align: center;
 `;
 
@@ -45,16 +44,17 @@ export const Input = styled.input`
   height: 40px;
   margin-bottom: 24px;
   padding: 0 14px;
-  border: 1px solid #cbd5e1;
+  border: 1px solid ${({ theme }: any) => theme.color.border};
   border-radius: 6px;
+  font-size: ${({ theme }: any) => theme.font.input};
 `;
 
 export const LoginButton = styled.button`
   margin-top: 12px;
   border: none;
   background: transparent;
-  color: #2563eb;
-  cursor: pointer;
+  color: ${({ theme }: any) => theme.color.text};
+  font-size: ${({ theme }: any) => theme.font.caption};
 `;
 
 export const SignupButton = styled.button`
@@ -62,11 +62,11 @@ export const SignupButton = styled.button`
   height: 42px;
   border: none;
   border-radius: 6px;
-  background: #aeefff;
+  background: ${({ theme }: any) => theme.color.buttonBackground};
   color: white;
-  cursor: pointer;
+  font-size: ${({ theme }: any) => theme.font.button};
 
   &:hover {
-    background: #79ddf0;
+    background: ${({ theme }: any) => theme.color.buttonHover};
   }
 `;
