@@ -21,11 +21,6 @@ export const Title = styled.h1`
   text-align: center;
 `;
 
-export const Label = styled.label`
-  margin-bottom: 8px;
-  font-size: ${({ theme }: any) => theme.font.label};
-`;
-
 export const Select = styled.select`
   padding: 8px 14px;
   border: 1px solid ${({ theme }: any) => theme.color.border};
@@ -38,15 +33,6 @@ export const LoginText = styled.h1`
   color: ${({ theme }: any) => theme.color.text};
   font-size: ${({ theme }: any) => theme.font.caption};
   text-align: center;
-`;
-
-export const Input = styled.input`
-  height: 40px;
-  margin-bottom: 24px;
-  padding: 0 14px;
-  border: 1px solid ${({ theme }: any) => theme.color.border};
-  border-radius: 6px;
-  font-size: ${({ theme }: any) => theme.font.input};
 `;
 
 export const LoginButton = styled.button`

@@ -3,13 +3,12 @@ import {
   PageContainer,
   SignupForm,
   Title,
-  Label,
-  Select,
   LoginText,
-  Input,
   LoginButton,
   SignupButton,
 } from "./SignupPage_css";
+
+import Input from "../../components/input/Input";
 
 function SignupPage() {
   const navigate = useNavigate();
@@ -19,31 +18,26 @@ function SignupPage() {
       <SignupForm>
         <Title>회원가입</Title>
 
-        <Label htmlFor="username">아이디</Label>
-        <Input id="username" placeholder="아이디를 입력해 주세요" />
-
-        <Label htmlFor="password">비밀번호</Label>
         <Input
-          id="password"
-          type="password"
-          placeholder="비밀번호를 입력해 주세요"
+          id="username"
+          label="아이디"
+          placeholder="아이디를 입력해주세요."
         />
 
-        <Label htmlFor="name">이름</Label>
-        <Input id="name" placeholder="이름을 입력해 주세요" />
+        <Input
+          id="password"
+          label="비밀번호"
+          type="password"
+          placeholder="비밀번호를 입력해주세요."
+        />
 
-        <Label htmlFor="email">이메일</Label>
-        <Input id="email" type="email" placeholder="이메일을 입력해 주세요" />
+        <Input id="name" label="이름" placeholder="이름을 입력해주세요." />
 
-        <Label htmlFor="age">나이</Label>
-        <Input id="age" type="number" placeholder="나이를 입력해 주세요" />
+        <Input id="email" label="이메일" placeholder="이메일을 입력해주세요." />
 
-        <Label htmlFor="part">파트</Label>
-        <Select id="part" defaultValue="web">
-          <option value="web">웹</option>
-          <option value="server">서버</option>
-          <option value="design">디자인</option>
-        </Select>
+        <Input id="age" label="나이" placeholder="나이를 입력해주세요." />
+
+        <Input id="part" label="파트" placeholder="파트를 입력해주세요." />
 
         <SignupButton type="button">회원가입</SignupButton>
 

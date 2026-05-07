@@ -3,12 +3,10 @@ import {
   PageContainer,
   LoginForm,
   Title,
-  Label,
-  Input,
   LoginButton,
   SignupButton,
 } from "./LoginPage_css";
-
+import Input from "../../components/input/Input";
 function LoginPage() {
   const navigate = useNavigate();
 
@@ -17,12 +15,15 @@ function LoginPage() {
       <LoginForm>
         <Title>SOPT MEMBERS</Title>
 
-        <Label htmlFor="username">아이디</Label>
-        <Input id="username" placeholder="아이디를 입력해주세요." />
+        <Input
+          id="username"
+          label="아이디"
+          placeholder="아이디를 입력해주세요."
+        />
 
-        <Label htmlFor="password">비밀번호</Label>
         <Input
           id="password"
+          label="비밀번호"
           type="password"
           placeholder="비밀번호를 입력해주세요."
         />
