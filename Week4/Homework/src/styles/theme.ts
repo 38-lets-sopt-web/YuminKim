@@ -1,11 +1,11 @@
 export const theme = {
   color: {
-    primary: "#eaf2f9",
-    text: "#173a5e",
-    border: "#cbd5e1",
-    button: "#aeefff",
-    buttonHover: "#79ddf0",
-    buttonText: "#2563eb",
+    primary: "#ebfff5",
+    text: "#175c5e",
+    border: "#e1faf6",
+    buttonBackground: "#b8e8de",
+    buttonHover: "#56d6c7",
+    buttonText: "#ffffff",
   },
   font: {
     title: "1.75rem",
