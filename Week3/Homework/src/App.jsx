@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { createPortal } from "react-dom";
 
 import moleImg from "./assets/mole.png";
 import bombImg from "./assets/bomb.png";
@@ -10,26 +9,9 @@ import {
   Header,
   Title,
   TabButton,
-  GameButton,
-  GameLayout,
-  StatusPanel,
-  Card,
-  CountRow,
-  MessageCard,
-  GamePanel,
-  GameToolbar,
-  LevelSelect,
-  ButtonGroup,
-  Board,
-  Hole,
-  TargetImage,
-  ModalOverlay,
-  ModalBox,
-  ModalTitle,
-  ModalScore,
-  ModalButton,
 } from "./App.styles";
 
+import Game from "./game/Game";
 import Ranking from "./ranking/Ranking";
 
 const RANKING_STORAGE_KEY = "mole-game-rankings";
@@ -198,79 +180,24 @@ function App() {
       </Header>
 
       {activeTab === "game" && (
-        <GameLayout>
-          <StatusPanel>
-            <Card>
-              <p>남은시간</p>
-              <strong>{timeLeft.toFixed(1)}</strong>
-            </Card>
-
-            <Card>
-              <p>총 점수</p>
-              <strong>{score}</strong>
-            </Card>
-
-            <CountRow>
-              <Card>
-                <p style={{ color: "#31b45f" }}>성공</p>
-                <strong>{successCount}</strong>
-              </Card>
-
-              <Card>
-                <p style={{ color: "#f06b6b" }}>실패</p>
-                <strong>{failCount}</strong>
-              </Card>
-            </CountRow>
-
-            <MessageCard>
-              <p>안내 메세지</p>
-              <strong>{message}</strong>
-            </MessageCard>
-          </StatusPanel>
-
-          <GamePanel>
-            <GameToolbar>
-              <LevelSelect>
-                <option>Level 1</option>
-                <option>Level 2</option>
-                <option>Level 3</option>
-              </LevelSelect>
-
-              <ButtonGroup>
-                <GameButton onClick={handleStartGame}>
-                  <span style={{ color: "#31b45f" }}>시작</span>
-                </GameButton>
-                <GameButton onClick={() => setIsPlaying(false)}>
-                  <span style={{ color: "#f06b6b" }}>중단</span>
-                </GameButton>
-              </ButtonGroup>
-            </GameToolbar>
-
-            <Board>
-              {[0, 1, 2, 3].map((index) => (
-                <Hole key={index} onClick={() => handleClickHole(index)}>
-                  {isPlaying &&
-                    activeIndex === index &&
-                    activeType === "mole" && (
-                      <TargetImage src={moleImg} alt="두더지" />
-                    )}
-
-                  {isPlaying &&
-                    activeIndex === index &&
-                    activeType === "bomb" && (
-                      <TargetImage src={bombImg} alt="폭탄" />
-                    )}
-
-                  {isPlaying &&
-                    activeIndex === index &&
-                    activeType === "hit" && (
-                      <TargetImage src={hitMoleImg} alt="맞은 두더지" />
-                    )}
-                </Hole>
-              ))}
-            </Board>
-          </GamePanel>
-        </GameLayout>
+        <Game
+          timeLeft={timeLeft}
+          score={score}
+          successCount={successCount}
+          failCount={failCount}
+          message={message}
+          isPlaying={isPlaying}
+          isGameOver={isGameOver}
+          activeIndex={activeIndex}
+          activeType={activeType}
+          moleImg={moleImg}
+          bombImg={bombImg}
+          hitMoleImg={hitMoleImg}
+          onStartGame={handleStartGame}
+          onStopGame={() => setIsPlaying(false)}
+          onClickHole={handleClickHole}
+          onCloseModal={handleCloseModal}
+        />
       )}
 
       {activeTab === "ranking" && (
@@ -280,17 +207,6 @@ function App() {
         />
       )}
 
-      {isGameOver &&
-        createPortal(
-          <ModalOverlay>
-            <ModalBox>
-              <ModalTitle>게임 종료!</ModalTitle>
-              <ModalScore>최종 점수: {score}점</ModalScore>
-              <ModalButton onClick={handleCloseModal}>확인</ModalButton>
-            </ModalBox>
-          </ModalOverlay>,
-          document.body,
-        )}
     </Page>
   );
 }
