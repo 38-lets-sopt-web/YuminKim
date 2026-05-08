@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
+import { signup } from "../../apis/auth";
 import {
   PageContainer,
   SignupForm,
@@ -14,7 +15,7 @@ import Input from "../../components/input/Input";
 function SignupPage() {
   const navigate = useNavigate();
   const [signupForm, setSignupForm] = useState({
-    username: "",
+    loginId: "",
     password: "",
     name: "",
     email: "",
@@ -33,9 +34,15 @@ function SignupPage() {
     });
   };
 
-  const handleSignupButtonClick = () => {
-    console.log(signupForm);
-    alert("회원가입에 성공했습니다!");
+  const handleSignupButtonClick = async () => {
+    try {
+      await signup(signupForm);
+
+      alert("회원가입에 성공했습니다!");
+      navigate("/login");
+    } catch {
+      alert("회원가입에 실패했습니다.");
+    }
   };
 
   return (
@@ -44,10 +51,10 @@ function SignupPage() {
         <Title>회원가입</Title>
 
         <Input
-          id="username"
+          id="loginId"
           label="아이디"
           placeholder="아이디를 입력해주세요."
-          value={signupForm.username}
+          value={signupForm.loginId}
           onChange={handleSignupFormChange}
         />
 
