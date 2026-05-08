@@ -6,6 +6,7 @@ export const theme = {
     buttonBackground: "#b8e8de",
     buttonHover: "#56d6c7",
     buttonText: "#ffffff",
+    white: "white",
   },
   font: {
     title: "1.75rem",

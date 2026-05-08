@@ -25,7 +25,7 @@ export const InfoCard = styled.section`
   margin-bottom: 2.5rem;
   padding: 2rem;
   border-radius: 0.875rem;
-  background: ${({ theme }: any) => theme.color.primary};
+  background: ${({ theme }: any) => theme.color.white};
 `;
 
 export const InfoRow = styled.div`

@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+import { getUser } from "../../apis/user";
 import Header from "../../components/Header";
 import Input from "../../components/input/Input";
 import {
@@ -14,6 +16,7 @@ import {
 } from "./MyPage.styled";
 
 function MyPage() {
+  const navigate = useNavigate();
   const [myInfo, setMyInfo] = useState({
     loginId: "",
     part: "",
@@ -21,6 +24,35 @@ function MyPage() {
     email: "",
     age: "",
   });
+
+  useEffect(() => {
+    const userId = localStorage.getItem("userId");
+
+    if (!userId) {
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+      return;
+    }
+
+    const fetchMyInfo = async () => {
+      try {
+        const data = await getUser(userId);
+        const user = data.data;
+
+        setMyInfo({
+          loginId: user.loginId,
+          part: user.part,
+          name: user.name,
+          email: user.email,
+          age: String(user.age),
+        });
+      } catch {
+        alert("내 정보를 불러오지 못했습니다.");
+      }
+    };
+
+    fetchMyInfo();
+  }, [navigate]);
 
   const handleMyInfoChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = event.target;
