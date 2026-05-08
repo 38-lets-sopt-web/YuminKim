@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import LoginPage from "../pages/login/LoginPage";
+import MembersPage from "../pages/members/MembersPage";
 import SignupPage from "../pages/sign-up/SignupPage";
 import Mypage from "../pages/mypages/MyPage";
 import { Navigate } from "react-router";
@@ -21,6 +22,10 @@ function Router() {
     {
       path: "/mypage",
       element: <Mypage />,
+    },
+    {
+      path: "/members",
+      element: <MembersPage />,
     },
   ]);
 
