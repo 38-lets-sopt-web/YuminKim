@@ -1,5 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router";
 import LoginPage from "../pages/login/LoginPage";
+import MemberDetailPage from "../pages/member-detail/MemberDetailPage";
 import MembersPage from "../pages/members/MembersPage";
 import SignupPage from "../pages/sign-up/SignupPage";
 import Mypage from "../pages/mypages/MyPage";
@@ -26,6 +27,10 @@ function Router() {
     {
       path: "/members",
       element: <MembersPage />,
+    },
+    {
+      path: "/members/:userId",
+      element: <MemberDetailPage />,
     },
   ]);
 

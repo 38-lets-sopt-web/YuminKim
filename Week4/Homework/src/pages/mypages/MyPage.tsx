@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import { getUser } from "../../apis/user";
+import { getUser, updateUser } from "../../apis/user";
 import Header from "../../components/Header";
 import Input from "../../components/input/Input";
 import {
@@ -63,6 +63,28 @@ function MyPage() {
     });
   };
 
+  const handleUpdateButtonClick = async () => {
+    const userId = localStorage.getItem("userId");
+
+    if (!userId) {
+      alert("로그인이 필요합니다.");
+      navigate("/login");
+      return;
+    }
+
+    try {
+      await updateUser(userId, {
+        name: myInfo.name,
+        email: myInfo.email,
+        age: Number(myInfo.age),
+      });
+
+      alert("정보 수정에 성공했습니다.");
+    } catch {
+      alert("정보 수정에 실패했습니다.");
+    }
+  };
+
   return (
     <PageContainer>
       <Header name={myInfo.name} />
@@ -106,7 +128,9 @@ function MyPage() {
             onChange={handleMyInfoChange}
           />
 
-          <UpdateButton type="button">정보 수정</UpdateButton>
+          <UpdateButton type="button" onClick={handleUpdateButtonClick}>
+            정보 수정
+          </UpdateButton>
         </FormContainer>
       </MainContainer>
     </PageContainer>
