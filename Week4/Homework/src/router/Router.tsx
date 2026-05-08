@@ -6,7 +6,7 @@ import Mypage from "../pages/mypages/MyPage";
 function Router() {
   const router = createBrowserRouter([
     {
-      path: "/",
+      path: "/login",
       element: <LoginPage />,
     },
     {
