@@ -1,4 +1,4 @@
-import { InputContainer, Label, StyledInput } from "./Input_css";
+import { InputContainer, Label, StyledInput } from "./Input.styled";
 
 type InputProps = {
   id: string;

@@ -8,7 +8,7 @@ import {
   LoginText,
   LoginButton,
   SignupButton,
-} from "./SignupPage_css";
+} from "./SignupPage.styled";
 
 import Input from "../../components/input/Input";
 

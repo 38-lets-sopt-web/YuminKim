@@ -7,7 +7,7 @@ import {
   Title,
   LoginButton,
   SignupButton,
-} from "./LoginPage_css";
+} from "./LoginPage.styled";
 
 import Input from "../../components/input/Input";
 
