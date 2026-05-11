@@ -1,104 +1,28 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 
 import moleImg from "./assets/mole.png";
 import bombImg from "./assets/bomb.png";
 import hitMoleImg from "./assets/hit-mole.png";
 
 import Game from "./game/Game";
+import useMoleGame from "./game/useMoleGame";
 import Header from "./header/Header";
 import Ranking from "./ranking/Ranking";
 
 const RANKING_STORAGE_KEY = "mole-game-rankings";
 
-const GAME_CONFIG = {
-  DURATION: 15,
-  TICK_INTERVAL: 100,
-  TICK_UNIT: 0.1,
-  HIT_DELAY: 700,
-  BOMB_DELAY: 500,
-  TARGET_INTERVAL: 1300,
-  BOARD_COUNT: 4,
-  MOLE_RATE: 0.7,
+const RANKING_CONFIG = {
   MIN_SAVE_SCORE: 1,
-};
-
-const getRandomTarget = () => {
-  const index = Math.floor(Math.random() * GAME_CONFIG.BOARD_COUNT);
-  const type = Math.random() < GAME_CONFIG.MOLE_RATE ? "mole" : "bomb";
-
-  return { index, type };
 };
 
 function App() {
   const [activeTab, setActiveTab] = useState("game");
-  const [timeLeft, setTimeLeft] = useState(GAME_CONFIG.DURATION);
-  const [score, setScore] = useState(0);
-  const [successCount, setSuccessCount] = useState(0);
-  const [failCount, setFailCount] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isGameOver, setIsGameOver] = useState(false);
-  const [activeTarget, setActiveTarget] = useState({
-    index: null,
-    type: null,
-  });
   const [rankingRecords, setRankingRecords] = useState([]);
   const hasSaveRecordRef = useRef(false);
-  const [message, setMessage] = useState("");
 
-  const showRandomTarget = useCallback(() => {
-    setActiveTarget(getRandomTarget());
-  }, []);
-
-  const handleClickHole = (index) => {
-    if (!isPlaying) return;
-    if (activeTarget.index !== index) return;
-
-    if (activeTarget.type === "mole") {
-      setScore((prevScore) => prevScore + 1);
-      setSuccessCount((prevCount) => prevCount + 1);
-      setActiveTarget((prevTarget) => ({ ...prevTarget, type: "hit" }));
-      setMessage("두더지를 잡았다!");
-
-      setTimeout(() => {
-        setMessage("");
-        showRandomTarget();
-      }, GAME_CONFIG.HIT_DELAY);
-
-      return;
-    }
-
-    if (activeTarget.type === "bomb") {
-      setScore((prevScore) => prevScore - 1);
-      setFailCount((prevCount) => prevCount + 1);
-      setMessage("펑!!");
-
-      setActiveTarget({ index: null, type: null });
-
-      setTimeout(() => {
-        setMessage("");
-        showRandomTarget();
-      }, GAME_CONFIG.BOMB_DELAY);
-    }
-  };
-
-  const handleStartGame = () => {
-    setIsGameOver(false);
-    hasSaveRecordRef.current = false;
-    setTimeLeft(GAME_CONFIG.DURATION);
-    setScore(0);
-    setSuccessCount(0);
-    setFailCount(0);
-    setIsPlaying(true);
-    showRandomTarget();
-  };
-
-  const handleCloseModal = () => {
-    setIsGameOver(false);
-  };
-
-  const saveRankingRecord = useCallback(() => {
+  const saveRankingRecord = useCallback((score) => {
     if (hasSaveRecordRef.current) return;
-    if (score < GAME_CONFIG.MIN_SAVE_SCORE) return;
+    if (score < RANKING_CONFIG.MIN_SAVE_SCORE) return;
 
     hasSaveRecordRef.current = true;
 
@@ -118,7 +42,16 @@ function App() {
     );
 
     localStorage.setItem(RANKING_STORAGE_KEY, JSON.stringify(nextRecords));
-  }, [score]);
+  }, []);
+
+  const game = useMoleGame({
+    onGameEnd: saveRankingRecord,
+  });
+
+  const handleStartGame = () => {
+    hasSaveRecordRef.current = false;
+    game.handleStartGame();
+  };
 
   const loadRankingRecords = () => {
     const records = JSON.parse(
@@ -141,64 +74,27 @@ function App() {
     }
   };
 
-  const finishGame = useCallback(() => {
-    setIsPlaying(false);
-    setIsGameOver(true);
-    setActiveTarget({ index: null, type: null });
-    saveRankingRecord();
-  }, [saveRankingRecord]);
-
-  useEffect(() => {
-    if (!isPlaying) return;
-
-    const timerId = setInterval(() => {
-      setTimeLeft((prevTime) => {
-        if (prevTime <= GAME_CONFIG.TICK_UNIT) {
-          finishGame();
-          return 0;
-        }
-
-        return prevTime - GAME_CONFIG.TICK_UNIT;
-      });
-    }, GAME_CONFIG.TICK_INTERVAL);
-
-    return () => clearInterval(timerId);
-  }, [isPlaying, finishGame]);
-
-  useEffect(() => {
-    if (!isPlaying) return;
-
-    const targetTimerId = setInterval(() => {
-      if (activeTarget.type === "hit") return;
-      if (message) return;
-
-      showRandomTarget();
-    }, GAME_CONFIG.TARGET_INTERVAL);
-
-    return () => clearInterval(targetTimerId);
-  }, [isPlaying, activeTarget.type, message, showRandomTarget]);
-
   return (
     <main className="page">
       <Header activeTab={activeTab} onChangeTab={handleChangeTab} />
 
       {activeTab === "game" && (
         <Game
-          timeLeft={timeLeft}
-          score={score}
-          successCount={successCount}
-          failCount={failCount}
-          message={message}
-          isPlaying={isPlaying}
-          isGameOver={isGameOver}
-          activeTarget={activeTarget}
+          timeLeft={game.timeLeft}
+          score={game.score}
+          successCount={game.successCount}
+          failCount={game.failCount}
+          message={game.message}
+          isPlaying={game.isPlaying}
+          isGameOver={game.isGameOver}
+          activeTarget={game.activeTarget}
           moleImg={moleImg}
           bombImg={bombImg}
           hitMoleImg={hitMoleImg}
           onStartGame={handleStartGame}
-          onStopGame={() => setIsPlaying(false)}
-          onClickHole={handleClickHole}
-          onCloseModal={handleCloseModal}
+          onStopGame={game.handleStopGame}
+          onClickHole={game.handleClickHole}
+          onCloseModal={game.handleCloseModal}
         />
       )}
 
