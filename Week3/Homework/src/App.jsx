@@ -4,14 +4,8 @@ import moleImg from "./assets/mole.png";
 import bombImg from "./assets/bomb.png";
 import hitMoleImg from "./assets/hit-mole.png";
 
-import {
-  Page,
-  Header,
-  Title,
-  TabButton,
-} from "./App.styles";
-
 import Game from "./game/Game";
+import Header from "./header/Header";
 import Ranking from "./ranking/Ranking";
 
 const RANKING_STORAGE_KEY = "mole-game-rankings";
@@ -130,6 +124,14 @@ function App() {
     setRankingRecords([]);
   };
 
+  const handleChangeTab = (tab) => {
+    setActiveTab(tab);
+
+    if (tab === "ranking") {
+      loadRankingRecords();
+    }
+  };
+
   useEffect(() => {
     if (!isPlaying) return;
 
@@ -165,19 +167,8 @@ function App() {
   }, [isPlaying, activeType, message, showRandomTarget]);
 
   return (
-    <Page>
-      <Header>
-        <Title>두더지 게임</Title>
-        <TabButton onClick={() => setActiveTab("game")}>게임</TabButton>
-        <TabButton
-          onClick={() => {
-            setActiveTab("ranking");
-            loadRankingRecords();
-          }}
-        >
-          랭킹
-        </TabButton>
-      </Header>
+    <main className="page">
+      <Header activeTab={activeTab} onChangeTab={handleChangeTab} />
 
       {activeTab === "game" && (
         <Game
@@ -207,7 +198,7 @@ function App() {
         />
       )}
 
-    </Page>
+    </main>
   );
 }
 
