@@ -6,12 +6,14 @@ import {
   Card,
   CountRow,
   GameButton,
+  GameButtonText,
   GameLayout,
   GamePanel,
   GameToolbar,
   Hole,
   LevelSelect,
   MessageCard,
+  StatusLabel,
   ModalBox,
   ModalButton,
   ModalOverlay,
@@ -55,12 +57,12 @@ function Game({
 
           <CountRow>
             <Card>
-              <p style={{ color: "#31b45f" }}>성공</p>
+              <StatusLabel type="success">성공</StatusLabel>
               <strong>{successCount}</strong>
             </Card>
 
             <Card>
-              <p style={{ color: "#f06b6b" }}>실패</p>
+              <StatusLabel type="danger">실패</StatusLabel>
               <strong>{failCount}</strong>
             </Card>
           </CountRow>
@@ -81,10 +83,10 @@ function Game({
 
             <ButtonGroup>
               <GameButton onClick={onStartGame}>
-                <span style={{ color: "#31b45f" }}>시작</span>
+                <GameButtonText type="success">시작</GameButtonText>
               </GameButton>
               <GameButton onClick={onStopGame}>
-                <span style={{ color: "#f06b6b" }}>중단</span>
+                <GameButtonText type="danger">중단</GameButtonText>
               </GameButton>
             </ButtonGroup>
           </GameToolbar>

@@ -17,10 +17,10 @@ export const StatusPanel = styled.aside`
 
 export const Card = styled.div`
   border-radius: 1.6rem;
-  background-color: #d8f7ff;
+  background-color: var(--color-panel-bg);
   padding: 2.4rem;
   text-align: center;
-  color: #164673;
+  color: var(--color-primary-dark);
 
   p {
     margin: 0 0 0.8rem;
@@ -38,6 +38,11 @@ export const CountRow = styled.div`
   gap: 1.6rem;
 `;
 
+export const StatusLabel = styled.p`
+  color: ${({ type }) =>
+    type === "success" ? "var(--color-success)" : "var(--color-danger)"};
+`;
+
 export const MessageCard = styled(Card)`
   display: flex;
   flex-direction: column;
@@ -47,7 +52,7 @@ export const MessageCard = styled(Card)`
 export const GamePanel = styled.section`
   min-height: 56rem;
   border-radius: 1.6rem;
-  background-color: #d8f7ff;
+  background-color: var(--color-panel-bg);
   padding: 2.4rem;
 `;
 
@@ -60,10 +65,10 @@ export const GameToolbar = styled.div`
 
 export const LevelSelect = styled.select`
   padding: 0.8rem 1.4rem;
-  border: 1px solid #98d0d9;
+  border: 1px solid var(--color-border);
   border-radius: 1.6rem;
-  background-color: #ffffff;
-  color: #309cac;
+  background-color: var(--color-white);
+  color: var(--color-primary);
   font-size: 1.6rem;
   cursor: pointer;
 `;
@@ -75,11 +80,16 @@ export const ButtonGroup = styled.div`
 
 export const GameButton = styled.button`
   padding: 0.8rem 1.4rem;
-  border: 1px solid #98d0d9;
+  border: 1px solid var(--color-border);
   border-radius: 1.6rem;
-  background-color: #ffffff;
-  color: #309cac;
+  background-color: var(--color-white);
+  color: var(--color-primary);
   cursor: pointer;
+`;
+
+export const GameButtonText = styled.span`
+  color: ${({ type }) =>
+    type === "success" ? "var(--color-success)" : "var(--color-danger)"};
 `;
 
 export const Board = styled.div`
@@ -91,7 +101,7 @@ export const Board = styled.div`
   gap: 3.2rem;
   padding: 4rem;
   border-radius: 1.6rem;
-  background-color: #f4fdff;
+  background-color: var(--color-board-bg);
 `;
 
 export const Hole = styled.button`
@@ -99,7 +109,7 @@ export const Hole = styled.button`
   aspect-ratio: 1 / 1;
   border: none;
   border-radius: 50%;
-  background-color: #9feefa;
+  background-color: var(--color-hole);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -125,9 +135,9 @@ export const ModalBox = styled.div`
   width: 28rem;
   padding: 2.8rem;
   border-radius: 1.8rem;
-  background-color: #eaf7ff;
+  background-color: var(--color-modal-bg);
   text-align: center;
-  color: #12385c;
+  color: var(--color-text-dark);
   box-shadow: 0 20px 50px rgba(18, 56, 92, 0.25);
 `;
 
@@ -140,14 +150,14 @@ export const ModalScore = styled.strong`
   display: block;
   margin-bottom: 2rem;
   font-size: 2.8rem;
-  color: #309cac;
+  color: var(--color-primary);
 `;
 
 export const ModalButton = styled.button`
   padding: 1rem 1.8rem;
   border: none;
   border-radius: 999px;
-  background-color: #37bfd4;
-  color: #ffffff;
+  background-color: var(--color-primary);
+  color: var(--color-white);
   cursor: pointer;
 `;
