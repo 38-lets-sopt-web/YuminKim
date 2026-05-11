@@ -71,7 +71,6 @@ function App() {
     if (activeType === "bomb") {
       setScore((prevScore) => prevScore - 1);
       setFailCount((prevCount) => prevCount + 1);
-      showRandomTarget();
       setMessage("펑!!");
 
       setActiveIndex(null);
@@ -110,7 +109,7 @@ function App() {
     );
 
     const newRecord = {
-      id: Date.now(),
+      id: crypto.randomUUID(),
       level: "Level 1",
       score,
       recordedAt: new Date().toLocaleString(),
@@ -144,17 +143,21 @@ function App() {
     }
   };
 
+  const finishGame = useCallback(() => {
+    setIsPlaying(false);
+    setIsGameOver(true);
+    setActiveIndex(null);
+    setActiveType(null);
+    saveRankingRecord();
+  }, [saveRankingRecord]);
+
   useEffect(() => {
     if (!isPlaying) return;
 
     const timerId = setInterval(() => {
       setTimeLeft((prevTime) => {
         if (prevTime <= GAME_CONFIG.TICK_UNIT) {
-          setIsPlaying(false);
-          setIsGameOver(true);
-          setActiveIndex(null);
-          setActiveType(null);
-          saveRankingRecord();
+          finishGame();
           return 0;
         }
 
@@ -163,7 +166,7 @@ function App() {
     }, GAME_CONFIG.TICK_INTERVAL);
 
     return () => clearInterval(timerId);
-  }, [isPlaying, saveRankingRecord]);
+  }, [isPlaying, finishGame]);
 
   useEffect(() => {
     if (!isPlaying) return;
@@ -209,7 +212,6 @@ function App() {
           onResetRanking={handleResetRanking}
         />
       )}
-
     </main>
   );
 }
