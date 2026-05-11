@@ -8,44 +8,26 @@ import Game from "./game/Game";
 import useMoleGame from "./game/useMoleGame";
 import Header from "./header/Header";
 import Ranking from "./ranking/Ranking";
-
-const RANKING_STORAGE_KEY = "mole-game-rankings";
-
-const RANKING_CONFIG = {
-  MIN_SAVE_SCORE: 1,
-};
+import {
+  clearRankingRecords,
+  getRankingRecords,
+  saveRankingRecord,
+} from "./ranking/rankingStorage";
 
 function App() {
   const [activeTab, setActiveTab] = useState("game");
   const [rankingRecords, setRankingRecords] = useState([]);
   const hasSaveRecordRef = useRef(false);
 
-  const saveRankingRecord = useCallback((score) => {
+  const handleSaveRankingRecord = useCallback((score) => {
     if (hasSaveRecordRef.current) return;
-    if (score < RANKING_CONFIG.MIN_SAVE_SCORE) return;
 
-    hasSaveRecordRef.current = true;
-
-    const prevRecords = JSON.parse(
-      localStorage.getItem(RANKING_STORAGE_KEY) || "[]",
-    );
-
-    const newRecord = {
-      id: crypto.randomUUID(),
-      level: "Level 1",
-      score,
-      recordedAt: new Date().toLocaleString(),
-    };
-
-    const nextRecords = [...prevRecords, newRecord].sort(
-      (a, b) => b.score - a.score,
-    );
-
-    localStorage.setItem(RANKING_STORAGE_KEY, JSON.stringify(nextRecords));
+    const isSaved = saveRankingRecord(score);
+    hasSaveRecordRef.current = isSaved;
   }, []);
 
   const game = useMoleGame({
-    onGameEnd: saveRankingRecord,
+    onGameEnd: handleSaveRankingRecord,
   });
 
   const handleStartGame = () => {
@@ -54,15 +36,11 @@ function App() {
   };
 
   const loadRankingRecords = () => {
-    const records = JSON.parse(
-      localStorage.getItem(RANKING_STORAGE_KEY) || "[]",
-    );
-
-    setRankingRecords(records);
+    setRankingRecords(getRankingRecords());
   };
 
   const handleResetRanking = () => {
-    localStorage.removeItem(RANKING_STORAGE_KEY);
+    clearRankingRecords();
     setRankingRecords([]);
   };
 
