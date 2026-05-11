@@ -40,6 +40,21 @@ function Game({
   onClickHole,
   onCloseModal,
 }) {
+  const targetImageMap = {
+    mole: moleImg,
+    bomb: bombImg,
+    hit: hitMoleImg,
+  };
+
+  const targetAltMap = {
+    mole: "두더지",
+    bomb: "폭탄",
+    hit: "맞은 두더지",
+  };
+
+  const targetImage = targetImageMap[activeTarget.type];
+  const targetAlt = targetAltMap[activeTarget.type];
+
   return (
     <>
       <GameLayout>
@@ -95,21 +110,9 @@ function Game({
               <Hole key={index} onClick={() => onClickHole(index)}>
                 {isPlaying &&
                   activeTarget.index === index &&
-                  activeTarget.type === "mole" && (
-                  <TargetImage src={moleImg} alt="두더지" />
-                )}
-
-                {isPlaying &&
-                  activeTarget.index === index &&
-                  activeTarget.type === "bomb" && (
-                  <TargetImage src={bombImg} alt="폭탄" />
-                )}
-
-                {isPlaying &&
-                  activeTarget.index === index &&
-                  activeTarget.type === "hit" && (
-                  <TargetImage src={hitMoleImg} alt="맞은 두더지" />
-                )}
+                  targetImage && (
+                    <TargetImage src={targetImage} alt={targetAlt} />
+                  )}
               </Hole>
             ))}
           </Board>
