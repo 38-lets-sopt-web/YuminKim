@@ -1,0 +1,44 @@
+html {
+  font-size: 62.5%;
+}
+
+:root {
+  --color-page-bg: #effcff;
+  --color-header-bg: #dff8ff;
+  --color-panel-bg: #d8f7ff;
+  --color-board-bg: #f4fdff;
+  --color-primary: #309cac;
+  --color-primary-dark: #164673;
+  --color-text-dark: #12385c;
+  --color-border: #98d0d9;
+  --color-hole: #9feefa;
+  --color-white: #ffffff;
+  --color-success: #31b45f;
+  --color-danger: #f06b6b;
+  --color-reset: #ff7c7c;
+  --color-modal-bg: #eaf7ff;
+  --color-table-border: #bceef6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  font-size: 1.6rem;
+  background-color: var(--color-page-bg);
+}
+
+button,
+select {
+  font: inherit;
+}
+
+.page {
+  min-height: 100vh;
+  background-color: var(--color-page-bg);
+  padding: 3.2rem;
+}
