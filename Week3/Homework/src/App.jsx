@@ -23,10 +23,10 @@ const GAME_CONFIG = {
 };
 
 const getRandomTarget = () => {
-  const randomIndex = Math.floor(Math.random() * GAME_CONFIG.BOARD_COUNT);
-  const randomType = Math.random() < GAME_CONFIG.MOLE_RATE ? "mole" : "bomb";
+  const index = Math.floor(Math.random() * GAME_CONFIG.BOARD_COUNT);
+  const type = Math.random() < GAME_CONFIG.MOLE_RATE ? "mole" : "bomb";
 
-  return { randomIndex, randomType };
+  return { index, type };
 };
 
 function App() {
@@ -37,27 +37,26 @@ function App() {
   const [failCount, setFailCount] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isGameOver, setIsGameOver] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(null);
-  const [activeType, setActiveType] = useState(null);
+  const [activeTarget, setActiveTarget] = useState({
+    index: null,
+    type: null,
+  });
   const [rankingRecords, setRankingRecords] = useState([]);
   const hasSaveRecordRef = useRef(false);
   const [message, setMessage] = useState("");
 
   const showRandomTarget = useCallback(() => {
-    const { randomIndex, randomType } = getRandomTarget();
-
-    setActiveIndex(randomIndex);
-    setActiveType(randomType);
+    setActiveTarget(getRandomTarget());
   }, []);
 
   const handleClickHole = (index) => {
     if (!isPlaying) return;
-    if (activeIndex !== index) return;
+    if (activeTarget.index !== index) return;
 
-    if (activeType === "mole") {
+    if (activeTarget.type === "mole") {
       setScore((prevScore) => prevScore + 1);
       setSuccessCount((prevCount) => prevCount + 1);
-      setActiveType("hit");
+      setActiveTarget((prevTarget) => ({ ...prevTarget, type: "hit" }));
       setMessage("두더지를 잡았다!");
 
       setTimeout(() => {
@@ -68,13 +67,12 @@ function App() {
       return;
     }
 
-    if (activeType === "bomb") {
+    if (activeTarget.type === "bomb") {
       setScore((prevScore) => prevScore - 1);
       setFailCount((prevCount) => prevCount + 1);
       setMessage("펑!!");
 
-      setActiveIndex(null);
-      setActiveType(null);
+      setActiveTarget({ index: null, type: null });
 
       setTimeout(() => {
         setMessage("");
@@ -146,8 +144,7 @@ function App() {
   const finishGame = useCallback(() => {
     setIsPlaying(false);
     setIsGameOver(true);
-    setActiveIndex(null);
-    setActiveType(null);
+    setActiveTarget({ index: null, type: null });
     saveRankingRecord();
   }, [saveRankingRecord]);
 
@@ -172,14 +169,14 @@ function App() {
     if (!isPlaying) return;
 
     const targetTimerId = setInterval(() => {
-      if (activeType === "hit") return;
+      if (activeTarget.type === "hit") return;
       if (message) return;
 
       showRandomTarget();
     }, GAME_CONFIG.TARGET_INTERVAL);
 
     return () => clearInterval(targetTimerId);
-  }, [isPlaying, activeType, message, showRandomTarget]);
+  }, [isPlaying, activeTarget.type, message, showRandomTarget]);
 
   return (
     <main className="page">
@@ -194,8 +191,7 @@ function App() {
           message={message}
           isPlaying={isPlaying}
           isGameOver={isGameOver}
-          activeIndex={activeIndex}
-          activeType={activeType}
+          activeTarget={activeTarget}
           moleImg={moleImg}
           bombImg={bombImg}
           hitMoleImg={hitMoleImg}

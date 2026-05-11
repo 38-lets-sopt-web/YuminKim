@@ -31,8 +31,7 @@ function Game({
   message,
   isPlaying,
   isGameOver,
-  activeIndex,
-  activeType,
+  activeTarget,
   moleImg,
   bombImg,
   hitMoleImg,
@@ -94,15 +93,21 @@ function Game({
           <Board>
             {[0, 1, 2, 3].map((index) => (
               <Hole key={index} onClick={() => onClickHole(index)}>
-                {isPlaying && activeIndex === index && activeType === "mole" && (
+                {isPlaying &&
+                  activeTarget.index === index &&
+                  activeTarget.type === "mole" && (
                   <TargetImage src={moleImg} alt="두더지" />
                 )}
 
-                {isPlaying && activeIndex === index && activeType === "bomb" && (
+                {isPlaying &&
+                  activeTarget.index === index &&
+                  activeTarget.type === "bomb" && (
                   <TargetImage src={bombImg} alt="폭탄" />
                 )}
 
-                {isPlaying && activeIndex === index && activeType === "hit" && (
+                {isPlaying &&
+                  activeTarget.index === index &&
+                  activeTarget.type === "hit" && (
                   <TargetImage src={hitMoleImg} alt="맞은 두더지" />
                 )}
               </Hole>
