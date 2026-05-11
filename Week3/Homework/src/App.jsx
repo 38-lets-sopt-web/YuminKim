@@ -10,16 +10,28 @@ import Ranking from "./ranking/Ranking";
 
 const RANKING_STORAGE_KEY = "mole-game-rankings";
 
+const GAME_CONFIG = {
+  DURATION: 15,
+  TICK_INTERVAL: 100,
+  TICK_UNIT: 0.1,
+  HIT_DELAY: 700,
+  BOMB_DELAY: 500,
+  TARGET_INTERVAL: 1300,
+  BOARD_COUNT: 4,
+  MOLE_RATE: 0.7,
+  MIN_SAVE_SCORE: 1,
+};
+
 const getRandomTarget = () => {
-  const randomIndex = Math.floor(Math.random() * 4);
-  const randomType = Math.random() < 0.7 ? "mole" : "bomb";
+  const randomIndex = Math.floor(Math.random() * GAME_CONFIG.BOARD_COUNT);
+  const randomType = Math.random() < GAME_CONFIG.MOLE_RATE ? "mole" : "bomb";
 
   return { randomIndex, randomType };
 };
 
 function App() {
   const [activeTab, setActiveTab] = useState("game");
-  const [timeLeft, setTimeLeft] = useState(15);
+  const [timeLeft, setTimeLeft] = useState(GAME_CONFIG.DURATION);
   const [score, setScore] = useState(0);
   const [successCount, setSuccessCount] = useState(0);
   const [failCount, setFailCount] = useState(0);
@@ -51,7 +63,7 @@ function App() {
       setTimeout(() => {
         setMessage("");
         showRandomTarget();
-      }, 700);
+      }, GAME_CONFIG.HIT_DELAY);
 
       return;
     }
@@ -68,14 +80,14 @@ function App() {
       setTimeout(() => {
         setMessage("");
         showRandomTarget();
-      }, 500);
+      }, GAME_CONFIG.BOMB_DELAY);
     }
   };
 
   const handleStartGame = () => {
     setIsGameOver(false);
     hasSaveRecordRef.current = false;
-    setTimeLeft(15);
+    setTimeLeft(GAME_CONFIG.DURATION);
     setScore(0);
     setSuccessCount(0);
     setFailCount(0);
@@ -89,7 +101,7 @@ function App() {
 
   const saveRankingRecord = useCallback(() => {
     if (hasSaveRecordRef.current) return;
-    if (score < 1) return;
+    if (score < GAME_CONFIG.MIN_SAVE_SCORE) return;
 
     hasSaveRecordRef.current = true;
 
@@ -137,7 +149,7 @@ function App() {
 
     const timerId = setInterval(() => {
       setTimeLeft((prevTime) => {
-        if (prevTime <= 0.1) {
+        if (prevTime <= GAME_CONFIG.TICK_UNIT) {
           setIsPlaying(false);
           setIsGameOver(true);
           setActiveIndex(null);
@@ -146,9 +158,9 @@ function App() {
           return 0;
         }
 
-        return prevTime - 0.1;
+        return prevTime - GAME_CONFIG.TICK_UNIT;
       });
-    }, 100);
+    }, GAME_CONFIG.TICK_INTERVAL);
 
     return () => clearInterval(timerId);
   }, [isPlaying, saveRankingRecord]);
@@ -161,7 +173,7 @@ function App() {
       if (message) return;
 
       showRandomTarget();
-    }, 1300);
+    }, GAME_CONFIG.TARGET_INTERVAL);
 
     return () => clearInterval(targetTimerId);
   }, [isPlaying, activeType, message, showRandomTarget]);
