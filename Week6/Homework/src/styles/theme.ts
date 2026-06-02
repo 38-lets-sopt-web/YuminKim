@@ -6,3 +6,5 @@ export const theme = {
     card: "#ffffff",
   },
 };
+
+export type AppTheme = typeof theme;
